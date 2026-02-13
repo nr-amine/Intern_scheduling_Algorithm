@@ -1,17 +1,36 @@
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class Intern implements Comparable<Intern> {
     private String nom;
     private double score;
-    private int hdjCount;
-    private int lastHdjDay;
-    private int lastDayWorked;
+    private LocalDate lastDayWorked;
+    private List<LocalDate> jours_conges; 
 
-    public Intern(String nom) {
+    public Intern(String nom, List<LocalDate> c) {
         this.nom = nom;
         this.score = 0;
-        this.hdjCount = 0;
-        this.lastHdjDay = 0; 
-        this.lastDayWorked = 0;
+        this.lastDayWorked = LocalDate.MIN;
+        jours_conges = c;
+    }
+    public Intern(String nom, List<LocalDate> c, LocalDate ldw) {
+        this.nom = nom;
+        this.score = 0;
+        this.lastDayWorked = ldw;
+        jours_conges = c;
+    }
+
+    public Intern(String nom, LocalDate ldw) {
+        this.nom = nom;
+        this.score = 0;
+        this.lastDayWorked = ldw;
+        jours_conges = new ArrayList<LocalDate>();
+    }
+
+    public boolean enConge(LocalDate date) {
+        return jours_conges != null && jours_conges.contains(date);
     }
 
     public String getNom() {
@@ -26,27 +45,11 @@ public class Intern implements Comparable<Intern> {
         this.score += value;
     }
 
-    public int getHdjCount() {
-        return hdjCount;
-    }
-
-    public void addHdjCount() {
-        this.hdjCount++;
-    }
-
-    public int getLastHdjDay() {
-        return lastHdjDay;
-    }
-
-    public void setLastHdjDay(int lastHdjDay) {
-        this.lastHdjDay = lastHdjDay;
-    }
-
-    public int getLastDayWorked() {
+    public LocalDate getLastDayWorked() {
         return lastDayWorked;
     }
 
-    public void setLastDayWorked(int lastDayWorked) {
+    public void setLastDayWorked(LocalDate lastDayWorked) {
         this.lastDayWorked = lastDayWorked;
     }
 
@@ -59,4 +62,5 @@ public class Intern implements Comparable<Intern> {
     public String toString() {
         return this.nom;
     }
+
 }
