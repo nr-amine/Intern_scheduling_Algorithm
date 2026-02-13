@@ -24,29 +24,15 @@ public class InternCal {
     public static void main(String[] args) {
        InternCal app = new InternCal();
 
-// Define the Date Ranges based on your text list
-List<LocalDate> feb18_25 = getDateRange(LocalDate.of(2026, 2, 17), LocalDate.of(2026, 2, 25));
-List<LocalDate> mar02_08 = getDateRange(LocalDate.of(2026, 3, 2), LocalDate.of(2026, 3, 8));
-List<LocalDate> mar08_18 = getDateRange(LocalDate.of(2026, 3, 8), LocalDate.of(2026, 3, 18));
-List<LocalDate> mar18_28 = getDateRange(LocalDate.of(2026, 3, 18), LocalDate.of(2026, 3, 28));
+    // Define the Date Ranges based on your text list
+    List<LocalDate> feb18_25 = getDateRange(LocalDate.of(2026, 2, 17), LocalDate.of(2026, 2, 25));
+    List<LocalDate> mar02_08 = getDateRange(LocalDate.of(2026, 3, 2), LocalDate.of(2026, 3, 8));
+    List<LocalDate> mar08_18 = getDateRange(LocalDate.of(2026, 3, 8), LocalDate.of(2026, 3, 18));
+    List<LocalDate> mar18_28 = getDateRange(LocalDate.of(2026, 3, 18), LocalDate.of(2026, 3, 28));
 
-// Group 1: 18/02 - 25/02
-app.tab.add(new Intern("Nouar", feb18_25, LocalDate.of(2026, 2, 5)));
-app.tab.add(new Intern("Benkhlifa", feb18_25, LocalDate.of(2026, 2, 5)));
-app.tab.add(new Intern("Bekhti", feb18_25, LocalDate.of(2026, 2, 5)));
+    // Example of Intern Adding:
+    app.tab.add(new Intern("Prototype", feb18_25, LocalDate.of(2026, 2, 5)));
 
-// Group 2: 02/03 – 08/03
-app.tab.add(new Intern("Amina", mar02_08, LocalDate.of(2026, 2, 5)));
-
-// Group 3: 08/03 - 18/03
-app.tab.add(new Intern("Mohamed", mar08_18, LocalDate.of(2026, 2, 3)));
-app.tab.add(new Intern("Asmaa", mar08_18, LocalDate.of(2026, 2, 11)));
-app.tab.add(new Intern("Wiam", mar08_18, LocalDate.of(2026, 2, 3)));
-
-// Group 4: 18/03 - 28/03
-app.tab.add(new Intern("Fares", mar18_28, LocalDate.of(2026, 2, 11)));
-app.tab.add(new Intern("Kouadri", mar18_28, LocalDate.of(2026, 2, 11)));
-app.tab.add(new Intern("Ghizlen", mar18_28, LocalDate.of(2026, 2, 11)));
 
 
 
