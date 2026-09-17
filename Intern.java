@@ -1,31 +1,42 @@
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class Intern implements Comparable<Intern> {
     private String nom;
     private double score;
     private LocalDate lastDayWorked;
-    private List<LocalDate> jours_conges;
+    private Set<LocalDate> jours_conges;
 
     public Intern(String nom, LocalDate ldw) {
-        this(nom, new ArrayList<>(), ldw);
+        this(nom, new HashSet<>(), ldw);
     }
 
-    public Intern(String nom, List<LocalDate> c) {
+    public Intern(String nom, Collection<LocalDate> c) {
         this(nom, c, LocalDate.MIN);
     }
 
-    public Intern(String nom, List<LocalDate> c, LocalDate ldw) {
+    public Intern(String nom, Collection<LocalDate> c, LocalDate ldw) {
         this.nom = nom;
         this.score = 0;
-        this.lastDayWorked = ldw;
-        this.jours_conges = (c != null) ? c : new ArrayList<>();
+        this.lastDayWorked = (ldw != null) ? ldw : LocalDate.MIN;
+        this.jours_conges = (c != null) ? new HashSet<>(c) : new HashSet<>();
     }
 
     public boolean enConge(LocalDate date) {
         return jours_conges.contains(date);
+    }
+
+    public void ajouterConge(LocalDate date) {
+        jours_conges.add(date);
+    }
+
+    public void ajouterConges(Collection<LocalDate> dates) {
+        if (dates != null) {
+            jours_conges.addAll(dates);
+        }
     }
 
     public String getNom() {
@@ -47,10 +58,12 @@ public class Intern implements Comparable<Intern> {
 
     @Override
     public int compareTo(Intern other) {
-        return Double.compare(this.score, other.score);
+        if (other == null) return 1;
+        int cmp = Double.compare(this.score, other.score);
+        if (cmp != 0) return cmp;
+        return this.nom.compareTo(other.nom);
     }
 
-    // Evite de selectionner le meme interne 2 fois
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
