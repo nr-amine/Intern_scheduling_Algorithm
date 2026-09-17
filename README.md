@@ -8,7 +8,7 @@ A priority-based heuristic scheduling tool written in Java to automate the assig
 
 Rather than random assignment, the scheduler applies a deterministic multi-criteria greedy heuristic for every duty date:
 
-1. **Hard Availability Constraint ($O(1)$):** Filters out any intern on approved leave (`enConge`) using `HashSet<LocalDate>` lookups.
+1. **Hard Availability Constraint (O(1)):** Filters out any intern on approved leave (`enConge`) using `HashSet<LocalDate>` lookups.
 2. **Primary Objective (Workload Balancing):** Prioritizes interns with the lowest cumulative duty count (`score`) to minimize overall workload variance.
 3. **Secondary Objective (Rest Period Maximization):** In case of equal scores, tie-breaks in favor of the intern with the earliest `lastDayWorked`, preventing consecutive-day fatigue.
 4. **Weekly Pool & Gap-Filling Fallback:** 
