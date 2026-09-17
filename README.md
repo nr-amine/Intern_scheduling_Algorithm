@@ -1,40 +1,38 @@
-# InternCal: Hospital Shift Rotation Scheduler
+# InternCal: Hospital Shift Scheduler
 
-A priority-based heuristic scheduling tool written in Java to automate the assignment of hospital intern duties (*gardes* and on-call rotations) over a multi-week semester. Built to eliminate manual scheduling errors, respect planned vacation leaves, and equalize cumulative workload.
+A simple Java tool to schedule hospital shifts (*gardes*) fairly among interns over a semester. I wrote this because scheduling shifts by hand is tedious, and it's easy to accidentally assign someone back-to-back shifts or ignore someone's vacation days.
 
 ---
 
-## How the Algorithm Works
+## How the Assignment Logic Works
 
-Rather than random assignment, the scheduler applies a deterministic multi-criteria greedy heuristic for every duty date:
+For every shift day, the scheduler follows three straightforward priority rules:
 
-1. **Hard Availability Constraint (O(1)):** Filters out any intern on approved leave (`enConge`) using `HashSet<LocalDate>` lookups.
-2. **Primary Objective (Workload Balancing):** Prioritizes interns with the lowest cumulative duty count (`score`) to minimize overall workload variance.
-3. **Secondary Objective (Rest Period Maximization):** In case of equal scores, tie-breaks in favor of the intern with the earliest `lastDayWorked`, preventing consecutive-day fatigue.
-4. **Weekly Pool & Gap-Filling Fallback:** 
-   * Each week initializes a fresh pool of interns to encourage balanced weekly rotation.
-   * If a week's pool is depleted due to multiple overlapping leaves, the scheduler automatically draws from the global cohort (giving a shift to the intern with the lowest overall score).
+1. **Check vacation leaves:** Skips anyone who is on approved leave that day (checked in $O(1)$ using a `HashSet`).
+2. **Balance total shifts:** Always prioritizes whoever has worked the *least* number of shifts so far.
+3. **Respect rest time:** If multiple interns have the same shift count, it picks whoever has rested the longest (earliest `lastDayWorked`).
+4. **Weekly pool with backup:** Interns are picked from a weekly pool to spread duties across the month. If too many people are on vacation that week and the weekly pool runs dry, it grabs someone from the main cohort who has the lowest shift count.
 
 ---
 
 ## Compiling and Running
 
 ### Prerequisites
-* Java Development Kit (JDK 11 or higher)
+* JDK 11 or higher
 
 ### Build and Run
 
 ```bash
-# Compile all source files
+# Compile
 javac *.java
 
-# Execute the simulation
+# Run the 12-week benchmark
 java InternCal
 ```
 
 ### Sample Output
 
-Running the included 12-week benchmark with 10 interns and staggered leaves:
+Running the 12-week simulation with 10 interns and staggered leaves:
 
 ```text
 === Starting Schedule Generation ===
@@ -65,7 +63,7 @@ Ecart type:  0.4714
 
 ---
 
-## Known Limitations & Design Trade-offs
+## Known Limitations
 
-* **Greedy Heuristic vs. Global CSP Solver:** The algorithm assigns shifts chronologically without backtracking. In heavily over-constrained edge cases (e.g., more than half the cohort taking simultaneous leave), it flags an alert rather than searching a combinatorial tree to backtrack earlier assignments.
-* **Uniform Shift Weighting:** Currently scores all shifts equally ($1.0$ point). Extending to differential weights (e.g., weekend shifts worth $1.5$ points, holidays worth $2.0$) would require parameterizing the shift scoring model.
+* **Greedy approach without backtracking:** The algorithm assigns days one by one from start to finish. If constraints are heavily over-constrained (e.g. half the cohort goes on leave at the same time), it prints an alert rather than undoing earlier choices.
+* **Equal shift points:** Right now every shift is worth 1 point. Weekend or night shifts aren't weighted differently yet.
